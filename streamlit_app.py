@@ -5,7 +5,7 @@ import os
 from snowflake.snowpark.functions import col
 # Sis: from snowflake.snowpark.context import get_active_session
 import requests  
-
+import pandas
 
 # Write directly to the app
 st.title(f":cup_with_straw: Customize Your Smoothie! :cup_with_straw:")
@@ -32,7 +32,11 @@ session = cnx.session()
 # SiS: session = get_active_session()
 
 my_dataframe = session.table("smoothies.public.fruit_options").select(col('FRUIT_NAME'),col('SEARCH_ON'))
-st.dataframe(data=my_dataframe, use_container_width=True)
+# st.dataframe(data=my_dataframe, use_container_width=True)
+# st.stop()
+# Convert the Snowpark Datagram to a Pandas Dataframe so we can use the LOC function
+pd_df = my_dataframe.to_pandas()
+st.dataframe(pd_df)
 st.stop()
 
 ingredients_list = st.multiselect(
